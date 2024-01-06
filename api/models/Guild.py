@@ -1,9 +1,8 @@
 from dataclasses import dataclass
-from json import loads
 
 
 @dataclass
-class Guild:
+class GuildDTO:
     id: int
     settings: dict
 
@@ -13,8 +12,8 @@ class GuildRequestRemote:
     id: int
 
 
-def mapDictToGuild(obj: dict) -> Guild | None:
+def mapDictToGuild(obj: dict) -> GuildDTO | None:
     try:
-        return Guild(**obj)
+        return GuildDTO(**obj)
     except:
         return

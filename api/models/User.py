@@ -1,9 +1,8 @@
 from dataclasses import dataclass
-from json import loads
 
 
 @dataclass
-class User:
+class UserDTO:
     id: int
 
 
@@ -12,8 +11,8 @@ class UserRequestRemote:
     id: int
 
 
-def mapDictToUser(obj: dict) -> User | None:
+def mapDictToUser(obj: dict) -> UserDTO | None:
     try:
-        return User(**obj)
+        return UserDTO(**obj)
     except:
         return
