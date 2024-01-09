@@ -2,10 +2,15 @@ from disnake import Embed
 from disnake.ext.commands import Cog, Bot, slash_command
 
 from bot.api.SawakoAPI import sawako_api
+from bot.utils.cogs.BaseCog import BaseCog
+from bot.utils.logging.Log import Log
+
+logger = Log(__file__)
 
 
-class Stats(Cog):
+class Stats(BaseCog):
     def __init__(self, bot: Bot):
+        super().__init__(logger)
         self.bot = bot
 
     @slash_command(description='Таблица лидеров')

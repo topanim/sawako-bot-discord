@@ -10,6 +10,8 @@ from bot.cogs.base.CacheControl import CacheControl
 from bot.cogs.base.RelevanceControl import RelevanceControl
 from bot.cogs.base.Start import Start
 from bot.cogs.games.numbers.Numbers import Numbers
+from bot.cogs.logging.base.MemberJoinRemove import MemberJoinRemove
+from bot.cogs.logging.base.MessageEdit import MessageEdit
 from bot.utils.logging.Log import Log
 
 load_dotenv()
@@ -29,6 +31,10 @@ def main():
     client.add_cog(Start(client))
     client.add_cog(RelevanceControl(client))
     client.add_cog(CacheControl())
+
+    # Logging
+    client.add_cog(MessageEdit(logger))
+    client.add_cog(MemberJoinRemove(client))
 
     # Activity
     client.add_cog(Profile(client))

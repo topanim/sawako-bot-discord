@@ -25,8 +25,6 @@ def async_on_use(logger: Log, level: Level, mess: str = None):
                 logger.log(level, mess)
             else:
                 logger.log(level, func.__name__)
-            return func(*args, **kwargs)
-
+            return await func(self, *args, **kwargs)
         return wrapper
-
     return decorator

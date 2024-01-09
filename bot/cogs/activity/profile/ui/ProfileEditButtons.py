@@ -5,8 +5,8 @@ from bot.api.SawakoAPI import sawako_api
 from bot.api.models.Member import MemberRequestRemote
 from bot.cogs.activity.profile.ui.ProfileEditModal import ProfileEditModal
 from bot.cogs.activity.profile.ui.ProfileEmbed import ProfileEmbed
-from bot.ui.embeds.error import ErrorEmbed
-from bot.ui.embeds.success import SuccessEmbed
+from bot.ui.embeds.ErrorEmbed import ErrorEmbed
+from bot.ui.embeds.SuccessEmbed import SuccessEmbed
 
 
 class ProfileEditButtons(View):

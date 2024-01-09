@@ -3,15 +3,16 @@ from disnake.ext.commands import Cog, Bot
 
 from bot.api.SawakoAPI import sawako_api
 from bot.api.models.Member import MemberRequestRemote
+from bot.utils.cogs.BaseCog import BaseCog
 from bot.utils.database.insert import insert_guild
 from bot.utils.logging.Log import Log
-from bot.utils.logging.decorators.on_use import on_use
 
 logger = Log(__file__)
 
 
-class RelevanceControl(Cog):
+class RelevanceControl(BaseCog):
     def __init__(self, bot: Bot):
+        super().__init__(logger)
         self.bot = bot
 
     @Cog.listener("on_guild_join")
@@ -34,4 +35,4 @@ class RelevanceControl(Cog):
     async def on_member_remove(self, member: disnake.Member):
         if not member.bot:
             logger.i(f'Delete member - {member.name}')
-            sawako_api.delete_member(member.guild.id, member.id)
+            sawako_api.delete_member(MemberRequestRemote(member.guild.id, member.id))

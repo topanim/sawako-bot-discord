@@ -5,11 +5,16 @@ from disnake.ext.commands import Cog, Bot, slash_command
 from bot.api.SawakoAPI import sawako_api
 from bot.cogs.activity.profile.ui.ProfileEditButtons import ProfileEditButtons
 from bot.cogs.activity.profile.ui.ProfileEmbed import ProfileEmbed
-from bot.ui.embeds.error import ErrorEmbed
+from bot.ui.embeds.ErrorEmbed import ErrorEmbed
+from bot.utils.cogs.BaseCog import BaseCog
+from bot.utils.logging.Log import Log
+
+logger = Log(__file__)
 
 
-class Profile(Cog):
+class Profile(BaseCog):
     def __init__(self, bot: Bot):
+        super().__init__(logger)
         self.bot = bot
 
     @slash_command(description='Профиль')

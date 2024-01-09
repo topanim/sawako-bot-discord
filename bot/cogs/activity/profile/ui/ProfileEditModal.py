@@ -4,8 +4,8 @@ from disnake.ui import TextInput, Modal
 from bot.api.SawakoAPI import sawako_api
 from bot.api.models.Member import UpdateMemberBioRequestRemote
 from bot.cogs.activity.profile.ui.ProfileEmbed import ProfileEmbed
-from bot.ui.embeds.success import SuccessEmbed
-from bot.utils.types.strings import none_if_empty
+from bot.ui.embeds.SuccessEmbed import SuccessEmbed
+from bot.utils.base.strings import none_if_empty
 
 
 class ProfileEditModal(Modal):

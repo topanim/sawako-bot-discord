@@ -2,14 +2,16 @@ from disnake.ext import tasks
 from disnake.ext.commands import Cog
 
 from bot.api.SawakoAPI import sawako_api
+from bot.utils.cogs.BaseCog import BaseCog
 from bot.utils.logging.Log import Log
-from res.cache.guilds import guilds_cache
+from bot.api.cache.guilds import guilds_cache
 
 logger = Log(__file__)
 
 
-class CacheControl(Cog):
+class CacheControl(BaseCog):
     def __init__(self):
+        super().__init__(logger)
         self.update_cache.start()
 
     def cog_unload(self) -> None:
@@ -18,6 +20,4 @@ class CacheControl(Cog):
     @tasks.loop(minutes=1.0)
     async def update_cache(self):
         logger.i('Update guilds cache')
-        guilds = sawako_api.fetch_guilds()
-        for guild in guilds:
-            guilds_cache[guild.id] = guild.settings
+        sawako_api.update_guilds_cache()

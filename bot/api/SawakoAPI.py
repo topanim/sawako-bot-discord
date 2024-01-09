@@ -2,14 +2,16 @@ from dataclasses import asdict
 
 from requests import get, post
 
+from bot.api.cache.guilds import guilds_cache
 from bot.api.models.Guild import GuildRequestRemote, mapDictToGuild, GuildDTO
 from bot.api.models.Member import MemberRequestRemote, mapDictToMember, MemberDTO, UpdateMemberBioRequestRemote, \
     UpdateMemberWalletRequestRemote
 from bot.api.models.User import UserRequestRemote, mapDictToUser, UserDTO
-from bot.utils.logging.decorators.on_error import on_error
 from bot.utils.logging.Log import Log
+from bot.utils.logging.decorators.on_error import on_error
 
 logger = Log(__file__)
+
 
 class SawakoAPI:
     # base
@@ -36,15 +38,15 @@ class SawakoAPI:
     MEMBERS_UPDATE_BIO = BASE_URL + "members/update/bio"
     MEMBERS_UPDATE_WALLET = BASE_URL + "members/update/wallet"
     MEMBERS_RESET_BIO = BASE_URL + "members/bio/reset"
-    MEMBERS_DELETE = BASE_URL + "members/{id}/delete"
+    MEMBERS_DELETE = BASE_URL + "members/delete"
 
     @staticmethod
     @on_error(logger, Log.ERROR)
     def create_user(user: UserRequestRemote):
         return post(SawakoAPI.USERS_CREATE, json=asdict(user))
 
-    @on_error(logger, Log.ERROR)
     @staticmethod
+    @on_error(logger, Log.ERROR)
     def fetch_user(user_id: int):
         return mapDictToUser(get(SawakoAPI.USERS_FETCH_ONE.format(id=user_id)).json())
 
@@ -123,8 +125,17 @@ class SawakoAPI:
 
     @staticmethod
     @on_error(logger, Log.ERROR)
-    def delete_member(member: MemberDTO):
-        return post(SawakoAPI.USERS_DELETE.format(id=member.id))
+    def delete_member(request_remote: MemberRequestRemote):
+        return post(SawakoAPI.MEMBERS_DELETE, json=asdict(request_remote))
+
+    @staticmethod
+    @on_error(logger, Log.ERROR)
+    def update_guilds_cache():
+        guilds = sawako_api.fetch_guilds()
+        guilds_cache.clear()
+
+        for guild in guilds:
+            guilds_cache[guild.id] = guild.settings
 
 
 sawako_api = SawakoAPI()

@@ -10,11 +10,16 @@ from bot.cogs.games.numbers.ui.GameIsInterrupted import GameIsInterrupted
 from bot.cogs.games.numbers.ui.GameRequest import GameRequest
 from bot.cogs.games.numbers.ui.Preparation import Preparation
 from bot.cogs.games.numbers.ui.WaitingTimeExceeded import WaitingTimeExceededEmbed
-from bot.ui.embeds.error import ErrorEmbed
+from bot.ui.embeds.ErrorEmbed import ErrorEmbed
+from bot.utils.cogs.BaseCog import BaseCog
+from bot.utils.logging.Log import Log
+
+logger = Log(__file__)
 
 
-class Numbers(Cog):
+class Numbers(BaseCog):
     def __init__(self, bot: Bot):
+        super().__init__(logger)
         self.bot = bot
 
     @slash_command()
@@ -23,16 +28,16 @@ class Numbers(Cog):
 
     @numbers.sub_command(description='Игра в числа')  # Игра в числа
     async def play(
-        self,
-        inter,
-        player2: Member = Param(name="соперник", description="Ваш соперник"),
-        author_num: str = Param(name="число",
-                                description="Ваше число, которое должен будет отгадать противник",
-                                min_length=4, max_length=4),
-        bet: int = Param(name="ставка", description="Ставка на игру (серверная валюта)",
-                         choices=[100, 500, 1000, 5000, 10000], default=0),
-        with_zero: str = Param(name="тип", description="Игра с нулем или без",
-                               choices=["С нулем", "Без нуля"], default="Без нуля")
+            self,
+            inter,
+            player2: Member = Param(name="соперник", description="Ваш соперник"),
+            author_num: str = Param(name="число",
+                                    description="Ваше число, которое должен будет отгадать противник",
+                                    min_length=4, max_length=4),
+            bet: int = Param(name="ставка", description="Ставка на игру (серверная валюта)",
+                             choices=[100, 500, 1000, 5000, 10000], default=0),
+            with_zero: str = Param(name="тип", description="Игра с нулем или без",
+                                   choices=["С нулем", "Без нуля"], default="Без нуля")
     ):
         if player2.bot:
             embed = ErrorEmbed('Вы не можете играть против бота') \
