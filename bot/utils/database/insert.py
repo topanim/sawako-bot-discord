@@ -1,9 +1,9 @@
 from disnake import Guild
 
-from api.SawakoAPI import sawako_api
-from api.models.Guild import GuildRequestRemote
-from api.models.Member import MemberRequestRemote
-from api.models.User import UserRequestRemote
+from bot.api.SawakoAPI import sawako_api
+from bot.api.models.Guild import GuildRequestRemote
+from bot.api.models.Member import MemberRequestRemote
+from bot.api.models.User import UserRequestRemote
 
 
 def insert_guild(guild: Guild):

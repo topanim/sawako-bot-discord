@@ -1,9 +1,13 @@
 from colorama import Fore
-from discord.utils.Insert import insert_guild
 from disnake.ext.commands import Cog, Bot
 
-from api.SawakoAPI import sawako_api
-from api.models.Guild import GuildRequestRemote
+from bot.api.SawakoAPI import sawako_api
+from bot.api.models.Guild import GuildRequestRemote
+from bot.utils.database.insert import insert_guild
+from bot.utils.logging.Log import Log
+from bot.utils.logging.decorators.on_use import on_use, async_on_use
+
+logger = Log(__file__)
 
 
 class Start(Cog):
@@ -12,7 +16,7 @@ class Start(Cog):
 
     @Cog.listener("on_ready")
     async def start_log(self):
-        print(Fore.GREEN + f"Logged in as {self.bot.user} (ID: {self.bot.user.id})\n------")
+        logger.i(f"Logged in as {self.bot.user} (ID: {self.bot.user.id})")
 
     @Cog.listener("on_ready")
     async def add_persistent_views(self):
@@ -21,6 +25,7 @@ class Start(Cog):
 
     @Cog.listener("on_ready")
     async def create_models(self):
+        print('hello')
         for guildDTO in sawako_api.fetch_guilds():
 
             guild = self.bot.get_guild(guildDTO.id)

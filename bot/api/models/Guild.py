@@ -13,7 +13,4 @@ class GuildRequestRemote:
 
 
 def mapDictToGuild(obj: dict) -> GuildDTO | None:
-    try:
-        return GuildDTO(**obj)
-    except:
-        return
+    return GuildDTO(**obj)

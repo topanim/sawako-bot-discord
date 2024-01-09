@@ -12,7 +12,4 @@ class UserRequestRemote:
 
 
 def mapDictToUser(obj: dict) -> UserDTO | None:
-    try:
-        return UserDTO(**obj)
-    except:
-        return
+    return UserDTO(**obj)

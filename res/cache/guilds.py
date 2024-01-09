@@ -1,0 +1,2 @@
+
+guilds_cache = dict()

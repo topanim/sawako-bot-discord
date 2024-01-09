@@ -2,10 +2,14 @@ from dataclasses import asdict
 
 from requests import get, post
 
-from api.models.Guild import GuildRequestRemote, mapDictToGuild, GuildDTO
-from api.models.Member import MemberRequestRemote, mapDictToMember, MemberDTO
-from api.models.User import UserRequestRemote, mapDictToUser, UserDTO
+from bot.api.models.Guild import GuildRequestRemote, mapDictToGuild, GuildDTO
+from bot.api.models.Member import MemberRequestRemote, mapDictToMember, MemberDTO, UpdateMemberBioRequestRemote, \
+    UpdateMemberWalletRequestRemote
+from bot.api.models.User import UserRequestRemote, mapDictToUser, UserDTO
+from bot.utils.logging.decorators.on_error import on_error
+from bot.utils.logging.Log import Log
 
+logger = Log(__file__)
 
 class SawakoAPI:
     # base
@@ -29,67 +33,96 @@ class SawakoAPI:
     MEMBERS_FETCH_TOP = BASE_URL + "members/top?guild_id={id}"
     MEMBERS_FETCH_ALL = BASE_URL + "members/"
     MEMBERS_FETCH_ONE = BASE_URL + "members/one/?guild_id={guild_id}&user_id={user_id}"
+    MEMBERS_UPDATE_BIO = BASE_URL + "members/update/bio"
+    MEMBERS_UPDATE_WALLET = BASE_URL + "members/update/wallet"
+    MEMBERS_RESET_BIO = BASE_URL + "members/bio/reset"
     MEMBERS_DELETE = BASE_URL + "members/{id}/delete"
 
     @staticmethod
+    @on_error(logger, Log.ERROR)
     def create_user(user: UserRequestRemote):
         return post(SawakoAPI.USERS_CREATE, json=asdict(user))
 
+    @on_error(logger, Log.ERROR)
     @staticmethod
     def fetch_user(user_id: int):
         return mapDictToUser(get(SawakoAPI.USERS_FETCH_ONE.format(id=user_id)).json())
 
     @staticmethod
+    @on_error(logger, Log.ERROR)
     def fetch_users():
         return list(map(lambda it: mapDictToUser(it), get(SawakoAPI.USERS_FETCH_ALL).json()))
 
     @staticmethod
+    @on_error(logger, Log.ERROR)
     def delete_user(user: UserDTO):
         return post(SawakoAPI.USERS_DELETE.format(id=user.id))
 
     @staticmethod
+    @on_error(logger, Log.ERROR)
     def create_guild(guild: GuildRequestRemote):
         return post(SawakoAPI.GUILDS_CREATE, json=asdict(guild))
 
     @staticmethod
+    @on_error(logger, Log.ERROR)
     def fetch_guild(guild_id: int):
         return mapDictToGuild(get(SawakoAPI.GUILDS_FETCH_ONE.format(id=guild_id)).json())
 
     @staticmethod
+    @on_error(logger, Log.ERROR)
     def fetch_guilds():
         return list(map(lambda it: mapDictToGuild(it), get(SawakoAPI.GUILDS_FETCH_ALL).json()))
 
     @staticmethod
+    @on_error(logger, Log.ERROR)
     def delete_guild(guild: GuildDTO):
         return post(SawakoAPI.USERS_DELETE.format(id=guild.id))
 
     @staticmethod
+    @on_error(logger, Log.ERROR)
     def create_member(member: MemberRequestRemote):
-        print(asdict(member))
-
         return post(SawakoAPI.MEMBERS_CREATE, json=asdict(member))
 
     @staticmethod
+    @on_error(logger, Log.ERROR)
     def fetch_member(guild_id: int, user_id: int):
         return mapDictToMember(get(
-            SawakoAPI.MEMBERS_FETCH_ONE.format(guild_id=guild_id, user_id=user_id)
-        ).json())
+            SawakoAPI.MEMBERS_FETCH_ONE.format(guild_id=guild_id, user_id=user_id)).json())
 
     @staticmethod
+    @on_error(logger, Log.ERROR)
     def fetch_members():
         return list(map(lambda it: mapDictToMember(it), get(SawakoAPI.MEMBERS_FETCH_ALL).json()))
 
     @staticmethod
+    @on_error(logger, Log.ERROR)
     def fetch_members_top(guild):
         return list(map(lambda it: mapDictToMember(it),
                         get(SawakoAPI.MEMBERS_FETCH_TOP.format(id=guild)).json()))
 
     @staticmethod
+    @on_error(logger, Log.ERROR)
     def fetch_members_from_guild(guild: int):
         return list(map(lambda it: mapDictToMember(it),
                         get(SawakoAPI.MEMBERS_FETCH_ALL_FROM_GUILD.format(id=guild)).json()))
 
     @staticmethod
+    @on_error(logger, Log.ERROR)
+    def update_member_bio(bio: UpdateMemberBioRequestRemote):
+        return mapDictToMember(post(SawakoAPI.MEMBERS_UPDATE_BIO, json=asdict(bio)).json())
+
+    @staticmethod
+    @on_error(logger, Log.ERROR)
+    def update_member_wallet(request_remote: UpdateMemberWalletRequestRemote):
+        return post(SawakoAPI.MEMBERS_UPDATE_WALLET, json=asdict(request_remote))
+
+    @staticmethod
+    @on_error(logger, Log.ERROR)
+    def reset_member_bio(request_remote: MemberRequestRemote):
+        return mapDictToMember(post(SawakoAPI.MEMBERS_RESET_BIO, json=asdict(request_remote)).json())
+
+    @staticmethod
+    @on_error(logger, Log.ERROR)
     def delete_member(member: MemberDTO):
         return post(SawakoAPI.USERS_DELETE.format(id=member.id))
 

@@ -23,8 +23,22 @@ class MemberRequestRemote:
     user_id: int
 
 
+@dataclass
+class UpdateMemberBioRequestRemote:
+    guild_id: int
+    user_id: int
+    name: str = None
+    birthdate: str = None
+    gender: str = None
+    about: str = None
+
+
+@dataclass
+class UpdateMemberWalletRequestRemote:
+    guild_id: int
+    user_id: int
+    amount: int
+
+
 def mapDictToMember(obj: dict) -> MemberDTO | None:
-    # try:
-        return MemberDTO(**obj)
-    # except:
-    #     return
+    return MemberDTO(**obj)
