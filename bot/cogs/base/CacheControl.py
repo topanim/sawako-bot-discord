@@ -3,10 +3,10 @@ from disnake.ext.commands import Cog
 
 from bot.api.SawakoAPI import sawako_api
 from bot.utils.cogs.BaseCog import BaseCog
-from bot.utils.logging.Log import Log
+from bot.utils.logging.Logger import Logger
 from bot.api.cache.guilds import guilds_cache
 
-logger = Log(__file__)
+logger = Logger(__file__)
 
 
 class CacheControl(BaseCog):

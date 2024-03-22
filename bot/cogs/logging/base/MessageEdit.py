@@ -4,17 +4,17 @@ from disnake import Message, Embed
 from disnake.ext.commands import Cog, Bot
 
 from bot.utils.cogs.BaseCog import BaseCog
-from bot.utils.logging.Log import Log
+from bot.utils.logging.Logger import Logger
 from res.colors.Color import Color
 from bot.api.cache.guilds import guilds_cache
 
-logger = Log(__file__)
+logger = Logger(__file__)
 
 
 class MessageEdit(BaseCog):
-    def __int__(self, bot: Bot):
-        self.bot = bot
+    def __init__(self, bot: Bot):
         super().__init__(logger)
+        self.bot = bot
 
     @Cog.listener("on_message")
     async def on_message(self, message: Message):
@@ -23,7 +23,6 @@ class MessageEdit(BaseCog):
     @Cog.listener("on_message_edit")
     async def on_message_edit(self, before: Message, after: Message):
         settings = guilds_cache[after.guild.id]['settings']['logging']
-        print(settings)
 
         if settings['enabled'] and settings['channel'] and before.content != after.content:
             channel = after.guild.get_channel(settings['channel'])

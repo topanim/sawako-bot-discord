@@ -3,13 +3,14 @@ from disnake.ext import commands
 from disnake.ext.commands import Cog, Bot, slash_command
 
 from bot.api.SawakoAPI import sawako_api
+from bot.api.models.Member import MemberRequestRemote
 from bot.cogs.activity.profile.ui.ProfileEditButtons import ProfileEditButtons
 from bot.cogs.activity.profile.ui.ProfileEmbed import ProfileEmbed
 from bot.ui.embeds.ErrorEmbed import ErrorEmbed
 from bot.utils.cogs.BaseCog import BaseCog
-from bot.utils.logging.Log import Log
+from bot.utils.logging.Logger import Logger
 
-logger = Log(__file__)
+logger = Logger(__file__)
 
 
 class Profile(BaseCog):
@@ -31,7 +32,7 @@ class Profile(BaseCog):
             embed = ErrorEmbed('Боты не заносятся в базу')
             await inter.send(embed=embed, ephemeral=True)
 
-        dto = sawako_api.fetch_member(guild_id=inter.guild.id, user_id=user.id)
+        dto = sawako_api.fetch_member(MemberRequestRemote(guild_id=inter.guild.id, user_id=user.id))
 
         await inter.send(embed=ProfileEmbed(
             guild=inter.guild,

@@ -1,10 +1,10 @@
 from disnake.ext.commands import Cog
 
-from bot.utils.logging.Log import Log
+from bot.utils.logging.Logger import Logger
 
 
 class BaseCog(Cog):
-    def __init__(self, logger: Log):
+    def __init__(self, logger: Logger):
         self.logger = logger
         super().__init__()
 

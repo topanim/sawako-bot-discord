@@ -2,18 +2,19 @@ from json import loads, dumps
 
 from disnake import Embed
 
-from bot.utils.logging.Log import Log
+from bot.utils.logging.Logger import Logger
 from bot.utils.logging.decorators.on_error import on_error
 
-logger = Log(__file__)
+logger = Logger(__file__)
 
 
 class Dispatcher:
 
     @classmethod
-    @on_error(logger, Log.ERROR)
+    @on_error(logger, Logger.ERROR)
     async def dispatch(cls, channel, send_obj: dict, data: dict):
-        await channel.send(
+        print(send_obj)
+        return await channel.base_send(
             content=cls.ParsedText(send_obj['text'], params=data),
             embed=cls.ParsedEmbed(send_obj['embed'], params=data))
 

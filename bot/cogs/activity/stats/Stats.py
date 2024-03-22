@@ -3,9 +3,9 @@ from disnake.ext.commands import Cog, Bot, slash_command
 
 from bot.api.SawakoAPI import sawako_api
 from bot.utils.cogs.BaseCog import BaseCog
-from bot.utils.logging.Log import Log
+from bot.utils.logging.Logger import Logger
 
-logger = Log(__file__)
+logger = Logger(__file__)
 
 
 class Stats(BaseCog):
@@ -28,4 +28,4 @@ class Stats(BaseCog):
                             value=f'lvl `{user.lvl}` | exp `{user.exp}/{user.up_exp}`',
                             inline=False)
             top += 1
-        await inter.send(embed=embed, ephemeral=True)
+        await inter.base_send(embed=embed, ephemeral=True)

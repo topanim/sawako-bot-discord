@@ -7,9 +7,9 @@ from bot.cogs.logging.base.ui.JoinRemoveEmbed import JoinRemoveEmbed
 from bot.api.cache.guilds import guilds_cache
 from bot.utils.cogs.BaseCog import BaseCog
 from bot.utils.event_dispatcher.Dispatcher import Dispatcher
-from bot.utils.logging.Log import Log
+from bot.utils.logging.Logger import Logger
 
-logger = Log(__file__)
+logger = Logger(__file__)
 
 
 class MemberJoinRemove(BaseCog):

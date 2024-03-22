@@ -24,6 +24,12 @@ class MemberRequestRemote:
 
 
 @dataclass
+class UpdatedMemberReceiveRemote:
+    before: MemberDTO
+    after: MemberDTO
+
+
+@dataclass
 class UpdateMemberBioRequestRemote:
     guild_id: int
     user_id: int
@@ -38,6 +44,19 @@ class UpdateMemberWalletRequestRemote:
     guild_id: int
     user_id: int
     amount: int
+
+
+@dataclass
+class UpdateMemberExpRequestRemote:
+    guild_id: int
+    user_id: int
+    quantity: int
+
+
+def mapDictToUpdatedMember(obj: dict) -> UpdatedMemberReceiveRemote | None:
+    return UpdatedMemberReceiveRemote(
+        before=MemberDTO(**obj['before']),
+        after=MemberDTO(**obj['after']))
 
 
 def mapDictToMember(obj: dict) -> MemberDTO | None:

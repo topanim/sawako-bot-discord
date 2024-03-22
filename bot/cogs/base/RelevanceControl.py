@@ -5,9 +5,9 @@ from bot.api.SawakoAPI import sawako_api
 from bot.api.models.Member import MemberRequestRemote
 from bot.utils.cogs.BaseCog import BaseCog
 from bot.utils.database.insert import insert_guild
-from bot.utils.logging.Log import Log
+from bot.utils.logging.Logger import Logger
 
-logger = Log(__file__)
+logger = Logger(__file__)
 
 
 class RelevanceControl(BaseCog):

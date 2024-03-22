@@ -5,6 +5,7 @@ from disnake.ext import commands
 from dotenv import load_dotenv
 
 from bot.cogs.activity.profile.Profile import Profile
+from bot.cogs.activity.receiving.ReceivingActivity import ReceivingActivity
 from bot.cogs.activity.stats.Stats import Stats
 from bot.cogs.base.CacheControl import CacheControl
 from bot.cogs.base.RelevanceControl import RelevanceControl
@@ -12,11 +13,14 @@ from bot.cogs.base.Start import Start
 from bot.cogs.games.numbers.Numbers import Numbers
 from bot.cogs.logging.base.MemberJoinRemove import MemberJoinRemove
 from bot.cogs.logging.base.MessageEdit import MessageEdit
-from bot.utils.logging.Log import Log
+from bot.cogs.logging.moderation.MemberUpdate import MemberUpdate
+from bot.cogs.moderation.AutoMod import AutoMod
+from bot.cogs.moderation.Moderation import Moderation
+from bot.utils.logging.Logger import Logger
 
 load_dotenv()
 
-logger = Log(__file__)
+logger = Logger(__file__)
 
 
 def main():
@@ -33,12 +37,18 @@ def main():
     client.add_cog(CacheControl())
 
     # Logging
-    client.add_cog(MessageEdit(logger))
+    client.add_cog(MessageEdit(client))
     client.add_cog(MemberJoinRemove(client))
+    client.add_cog(MemberUpdate(client))
 
     # Activity
+    client.add_cog(ReceivingActivity(client))
     client.add_cog(Profile(client))
     client.add_cog(Stats(client))
+
+    # Mod
+    client.add_cog(AutoMod(client))
+    client.add_cog(Moderation(client))
 
     # Games
     client.add_cog(Numbers(client))

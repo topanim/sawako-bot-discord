@@ -1,6 +1,6 @@
 
 class Color:
-    RED = ''
+    RED = 0xcd2142
     YELLOW = 0xFFDD8F
-    GREEN = ''
+    GREEN = 0xaae667
     PURPLE = 0xac7df8

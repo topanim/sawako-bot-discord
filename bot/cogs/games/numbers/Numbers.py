@@ -5,16 +5,16 @@ from disnake.ext.commands import Cog, Bot, slash_command, Param
 from disnake.ui import button, View
 
 from bot.api.SawakoAPI import sawako_api
-from bot.api.models.Member import UpdateMemberWalletRequestRemote
+from bot.api.models.Member import UpdateMemberWalletRequestRemote, MemberRequestRemote
 from bot.cogs.games.numbers.ui.GameIsInterrupted import GameIsInterrupted
 from bot.cogs.games.numbers.ui.GameRequest import GameRequest
 from bot.cogs.games.numbers.ui.Preparation import Preparation
 from bot.cogs.games.numbers.ui.WaitingTimeExceeded import WaitingTimeExceededEmbed
 from bot.ui.embeds.ErrorEmbed import ErrorEmbed
 from bot.utils.cogs.BaseCog import BaseCog
-from bot.utils.logging.Log import Log
+from bot.utils.logging.Logger import Logger
 
-logger = Log(__file__)
+logger = Logger(__file__)
 
 
 class Numbers(BaseCog):
@@ -51,8 +51,8 @@ class Numbers(BaseCog):
                             icon_url=inter.guild.icon.url)
             return await inter.response.send_message(embed=embed, ephemeral=True)
 
-        bal1 = sawako_api.fetch_member(guild_id=inter.guild.id, user_id=inter.author.id).wallet
-        bal2 = sawako_api.fetch_member(guild_id=inter.guild.id, user_id=inter.author.id).wallet
+        bal1 = sawako_api.fetch_member(MemberRequestRemote(guild_id=inter.guild.id, user_id=inter.author.id)).wallet
+        bal2 = sawako_api.fetch_member(MemberRequestRemote(guild_id=inter.guild.id, user_id=inter.author.id)).wallet
         if bal1 < bet or bal2 < bet:
             embed = ErrorEmbed('У одного из игроков недостаточно денег для игры') \
                 .set_footer(text="Перед началом игры, ознакомьтесь с ее правилами /numbers rules",
